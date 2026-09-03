@@ -12,6 +12,8 @@ const flowSpeedValue = document.querySelector('#flow-speed-value');
 
 const INITIAL_RENDER_MAX = 60;
 const PREFERENCES_KEY = 'bookmark-cloud-preferences';
+// 截图演示期间开启；回退真实书签/标签页时改为 false。
+const DEMO_MODE = false;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.1, 100);
 camera.position.z = 16;
@@ -77,6 +79,19 @@ function flattenBookmarks(nodes, results = [], folders = []) {
     }
   }
   return results;
+}
+
+function createMockLinks(count = 100) {
+  const categories = ['开发工具', '设计灵感', '人工智能', '效率工作', '阅读清单', '影音娱乐', '技术社区', '学习课程', '新闻资讯', '生活服务'];
+  return Array.from({ length: count }, (_, index) => {
+    const category = categories[index % categories.length];
+    const number = String(index + 1).padStart(3, '0');
+    return {
+      title: `${category} · 收藏链接 ${number}`,
+      url: `https://demo.bookmark-cloud.local/${category}/${number}`,
+      folders: ['演示书签', category],
+    };
+  });
 }
 
 function sourceNodes() {
@@ -201,6 +216,14 @@ function renderCloud() {
 }
 
 async function loadLinks() {
+  if (DEMO_MODE) {
+    bookmarks = createMockLinks();
+    tabs = [];
+    activeFilter = 'bookmarks';
+    buttons.forEach((button) => button.classList.toggle('is-active', button.dataset.filter === activeFilter));
+    renderCloud();
+    return;
+  }
   try {
     const [tree, currentTabs] = await Promise.all([chrome.bookmarks.getTree(), chrome.tabs.query({ currentWindow: true })]);
     bookmarks = flattenBookmarks(tree);

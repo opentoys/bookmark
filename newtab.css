@@ -17,38 +17,7 @@ body {
     #101216;
 }
 
-#cloud { position: fixed; inset: 0; perspective: 900px; overflow: hidden; cursor: grab; touch-action: none; }
-#cloud.is-dragging { cursor: grabbing; }
-#sphere { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
-
-.word {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  max-width: min(28rem, 70vw);
-  overflow: hidden;
-  padding: .28em .45em;
-  color: var(--word-color);
-  font-size: var(--word-size);
-  font-weight: 600;
-  letter-spacing: -.025em;
-  line-height: 1.15;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  text-shadow: 0 0 18px color-mix(in srgb, var(--word-color), transparent 60%);
-  white-space: nowrap;
-  cursor: pointer;
-  pointer-events: auto;
-  opacity: .88;
-  transform: translate(-50%, -50%) translate3d(var(--x), var(--y), var(--z));
-  transition: opacity .2s ease, filter .2s ease;
-  backface-visibility: hidden;
-}
-
-.word:hover, .word:focus-visible { filter: brightness(1.35); opacity: 1; outline: none; z-index: 2; }
-.word:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
-.word--folder { border: 1px solid color-mix(in srgb, var(--word-color), transparent 55%); border-radius: 999px; background: color-mix(in srgb, var(--word-color), transparent 89%); font-family: inherit; appearance: none; }
-.word--folder::before { content: '⌁ '; font-size: .82em; opacity: .72; }
+#cloud { position: fixed; inset: 0; overflow: hidden; cursor: default; }
 
 .controls {
   position: fixed;
@@ -67,12 +36,67 @@ body {
   z-index: 5;
 }
 
+.style-panel {
+  position: fixed;
+  top: 20px;
+  left: 22px;
+  width: 235px;
+  padding: 13px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  background: rgba(21,24,30,.78);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25);
+  color: #c9ced7;
+  font-size: 12px;
+  backdrop-filter: blur(14px);
+  z-index: 5;
+}
+.panel-title { margin-bottom: 10px; color: #f2f3f5; font-size: 13px; font-weight: 650; }
+.setting-group { display: grid; gap: 10px; }
+.setting-group[hidden] { display: none; }
+.range-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 8px; color: #b9bfca; }
+.range-row input { grid-column: 1 / -1; width: 100%; accent-color: #e5e7ec; }
+.range-row output { color: #fff; font-variant-numeric: tabular-nums; }
+
 .controls__label { font-size: 12px; }
 .search-wrap { position: fixed; top: 20px; left: 50%; display: flex; gap: 7px; z-index: 5; transform: translateX(-50%); }
 #search { width: min(300px, 52vw); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 10px 13px; background: rgba(21,24,30,.78); box-shadow: 0 12px 35px rgba(0,0,0,.2); color: #f4f5f7; font: inherit; font-size: 13px; outline: none; backdrop-filter: blur(14px); }
 #search:focus { border-color: rgba(255,255,255,.36); }
-#back { border: 0; border-radius: 10px; padding: 0 11px; background: rgba(255,255,255,.12); color: #fff; cursor: pointer; }
 .status { position: fixed; bottom: 17px; left: 50%; z-index: 3; transform: translateX(-50%); color: #8f96a3; font-size: 12px; }
+.tooltip {
+  position: fixed;
+  z-index: 8;
+  max-width: min(380px, calc(100vw - 28px));
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 9px;
+  background: rgba(18,20,25,.94);
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  color: #e8ebf0;
+  font-size: 12px;
+  line-height: 1.45;
+  pointer-events: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.tooltip__title { margin-bottom: 3px; color: #fff; font-weight: 650; }
+.tooltip__url { color: #aab2c0; }
+.tooltip[hidden] { display: none; }
+.context-menu {
+  position: fixed;
+  z-index: 9;
+  min-width: 132px;
+  margin: 0;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  background: rgba(23,26,32,.97);
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+.context-menu[hidden] { display: none; }
+.context-menu button { display: block; width: 100%; border: 0; border-radius: 6px; padding: 8px 10px; background: transparent; color: #edf0f4; cursor: pointer; font: inherit; font-size: 13px; text-align: left; }
+.context-menu button:hover { background: rgba(255,255,255,.1); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .segmented { display: flex; gap: 2px; }
 .segmented button {
@@ -96,4 +120,5 @@ body {
   .controls__label { display: none; }
   .search-wrap { top: 12px; left: 12px; transform: none; }
   #search { width: 150px; }
+  .style-panel { top: 61px; left: 12px; width: 210px; }
 }

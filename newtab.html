@@ -8,6 +8,12 @@
   </head>
   <body>
     <main id="cloud" aria-label="书签文字云"></main>
+    <aside class="style-panel" aria-label="瀑布展示设置">
+      <div class="panel-title">瀑布展示设置</div>
+      <div class="setting-group">
+        <label class="range-row">流速 <output id="flow-speed-value">中等</output><input id="flow-speed" type="range" min="1" max="10" value="4" /></label>
+      </div>
+    </aside>
     <div class="search-wrap">
       <label class="sr-only" for="search">搜索当前文字云</label>
       <input id="search" type="search" autocomplete="off" placeholder="搜索标题、链接或文件夹" />
@@ -21,6 +27,11 @@
       </div>
     </aside>
     <div id="status" class="status" hidden></div>
+    <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+    <menu id="context-menu" class="context-menu" hidden>
+      <button type="button" data-action="open">打开</button>
+      <button type="button" data-action="open-new-tab">新标签页打开</button>
+    </menu>
     <div id="empty" class="empty" hidden>这里还没有可显示的链接</div>
     <script type="module" src="newtab.js"></script>
   </body>

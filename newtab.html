@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookmark Clouds</title>
+    <link rel="stylesheet" href="newtab.css" />
+  </head>
+  <body>
+    <main id="cloud" aria-label="书签文字云"></main>
+    <div class="search-wrap">
+      <label class="sr-only" for="search">搜索当前文字云</label>
+      <input id="search" type="search" autocomplete="off" placeholder="搜索标题、链接或文件夹" />
+    </div>
+    <aside class="controls" aria-label="内容筛选">
+      <span class="controls__label">文字云</span>
+      <div class="segmented" role="group" aria-label="选择显示内容">
+        <button type="button" data-filter="all">全部</button>
+        <button type="button" data-filter="bookmarks" class="is-active">书签</button>
+        <button type="button" data-filter="tabs">标签页</button>
+      </div>
+    </aside>
+    <div id="status" class="status" hidden></div>
+    <div id="empty" class="empty" hidden>这里还没有可显示的链接</div>
+    <script type="module" src="newtab.js"></script>
+  </body>
+</html>

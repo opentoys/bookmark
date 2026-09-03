@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Bookmark Clouds",
+  "description": "在新标签页用漂浮文字云展示书签和已打开的标签页。",
+  "version": "1.0.0",
+  "permissions": ["bookmarks", "tabs"],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
+}

@@ -11,6 +11,7 @@ const flowSpeed = document.querySelector('#flow-speed');
 const flowSpeedValue = document.querySelector('#flow-speed-value');
 
 const INITIAL_RENDER_MAX = 60;
+const PREFERENCES_KEY = 'bookmark-cloud-preferences';
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.1, 100);
 camera.position.z = 16;
@@ -33,6 +34,29 @@ let contextLink = null;
 let waterfallSpeed = 4;
 let flowLinks = [];
 const clock = new THREE.Clock();
+
+function speedLabel(speed) {
+  return speed <= 3 ? '缓慢' : speed <= 6 ? '中等' : '快速';
+}
+
+function savePreferences() {
+  localStorage.setItem(PREFERENCES_KEY, JSON.stringify({ waterfallSpeed, activeFilter }));
+}
+
+function loadPreferences() {
+  try {
+    const preferences = JSON.parse(localStorage.getItem(PREFERENCES_KEY) || '{}');
+    if (Number.isFinite(preferences.waterfallSpeed) && preferences.waterfallSpeed >= 1 && preferences.waterfallSpeed <= 10) {
+      waterfallSpeed = preferences.waterfallSpeed;
+    }
+    if (['all', 'bookmarks', 'tabs'].includes(preferences.activeFilter)) activeFilter = preferences.activeFilter;
+  } catch (error) {
+    console.warn('无法读取本地展示设置', error);
+  }
+  flowSpeed.value = String(waterfallSpeed);
+  flowSpeedValue.value = speedLabel(waterfallSpeed);
+  buttons.forEach((button) => button.classList.toggle('is-active', button.dataset.filter === activeFilter));
+}
 
 // URL 哈希的前 6 个十六进制字符，保证同一链接颜色稳定。
 function colorForUrl(url) {
@@ -294,12 +318,14 @@ addEventListener('pointerdown', (event) => {
 buttons.forEach((button) => button.addEventListener('click', () => {
   activeFilter = button.dataset.filter;
   buttons.forEach((item) => item.classList.toggle('is-active', item === button));
+  savePreferences();
   renderCloud();
 }));
 
 flowSpeed.addEventListener('input', () => {
   waterfallSpeed = Number(flowSpeed.value);
-  flowSpeedValue.value = waterfallSpeed <= 3 ? '缓慢' : waterfallSpeed <= 6 ? '中等' : '快速';
+  flowSpeedValue.value = speedLabel(waterfallSpeed);
+  savePreferences();
 });
 search.addEventListener('input', renderCloud);
 addEventListener('resize', onResize);
@@ -327,4 +353,5 @@ function animate() {
 }
 
 animate();
+loadPreferences();
 loadLinks();
